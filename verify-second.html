@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2nd Verification - E-vide</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .verification-options {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .verification-option {
+            flex: 1;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .verification-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .option-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .product-preview {
+            background-color: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+        
+        .product-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .product-preview-details {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .product-preview-image {
+            flex: 1;
+            max-width: 300px;
+        }
+        
+        .product-preview-image img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        
+        .product-preview-info {
+            flex: 2;
+        }
+        
+        .product-preview-info p {
+            margin-bottom: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1><a href="index.html">E-vide</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#">Notifications</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#" id="logout-btn" class="btn-login">Logout</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h2>2nd Verification</h2>
+                <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+            </div>
+
+            <div class="dashboard-content">
+                <div id="link-input-section">
+                    <div class="verification-form">
+                        <h3>Enter Verification Link</h3>
+                        <p>Please paste the verification link shared by the 1st verifier.</p>
+                        
+                        <form id="second-verification-form">
+                            <div class="form-group">
+                                <label for="verification-link">Verification Link</label>
+                                <input type="text" id="verification-link-input" name="verification-link" placeholder="e.g., https://evide.com/verify/abc123xyz789" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Verify Product</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Product Preview Section (Hidden by default) -->
+                <div id="product-preview-section" style="display: none;">
+                    <div class="product-preview">
+                        <div class="product-preview-header">
+                            <h3>Product to Verify</h3>
+                            <span class="status status-pending">Pending Verification</span>
+                        </div>
+                        
+                        <div class="product-preview-details">
+                            <div class="product-preview-image">
+                                <img src="https://via.placeholder.com/300x300" alt="Product Image">
+                            </div>
+                            <div class="product-preview-info">
+                                <h4 id="product-name">iPhone 13 Pro</h4>
+                                <p><strong>Brand:</strong> <span id="product-brand">Apple</span></p>
+                                <p><strong>Submitted by:</strong> John Doe</p>
+                                <p><strong>Date Submitted:</strong> May 30, 2025</p>
+                                <div class="product-comments">
+                                    <h5>Seller's Comments:</h5>
+                                    <p id="product-comments">Excellent condition, only used for 6 months. Comes with original box and accessories. Minor scratch on the back.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center;">
+                            <p>To complete the verification, you need to take photos of the product from different angles.</p>
+                            <a href="photo-capture.html" class="btn btn-primary">Continue to Photo Capture</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>E-vide</h2>
+                <p>Verify Before You Buy</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> support@evide.com</p>
+                <p><i class="fas fa-phone"></i> +1 (123) 456-7890</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 E-vide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // No additional authentication code needed here
+        // The script.js file handles authentication automatically
+        
+        // Form submission handling
+        document.getElementById('second-verification-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // In a real application, you would validate the verification link here
+            // For this prototype, we'll just show the product preview section
+            
+            document.getElementById('link-input-section').style.display = 'none';
+            document.getElementById('product-preview-section').style.display = 'block';
+            
+            // You would typically fetch the product details from the server based on the verification link
+            // For this prototype, we're using hardcoded values
+        });
+        
+        // Mobile navigation
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+            
+            burger.addEventListener('click', () => {
+                // Toggle Nav
+                nav.classList.toggle('nav-active');
+                
+                // Animate Links
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Burger Animation
+                burger.classList.toggle('toggle');
+            });
+        }
+        
+        navSlide();
+    </script>
+</body>
+</html>

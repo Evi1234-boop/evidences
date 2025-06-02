@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1st Verification - E-vide</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .verification-options {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .verification-option {
+            flex: 1;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .verification-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .option-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .jobs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .job-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .job-details {
+            margin-bottom: 1.5rem;
+        }
+        
+        .job-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1><a href="index.html">E-vide</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#">Notifications</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#" id="logout-btn" class="btn-login">Logout</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h2>1st Verification</h2>
+                <a href="dashboard.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="verification-form">
+                    <h3>Product Information</h3>
+                    <p>Please provide details about the product you want to verify.</p>
+                    
+                    <form id="first-verification-form">
+                        <div class="form-group">
+                            <label for="product-name">Product Name</label>
+                            <input type="text" id="product-name" name="product-name" placeholder="Enter product name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="brand">Brand</label>
+                            <input type="text" id="brand" name="brand" placeholder="Enter brand name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Product Photo</label>
+                            <div class="file-upload" id="file-upload">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Drag & drop your product photo here or click to browse</p>
+                                <p class="file-info">Supported formats: JPG, PNG, JPEG</p>
+                                <input type="file" id="product-photo" name="product-photo" accept="image/*" required>
+                            </div>
+                            <div id="preview-container" style="display: none; margin-top: 1rem;">
+                                <h4>Preview:</h4>
+                                <img id="image-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 300px; border-radius: 5px;">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="comments">Additional Comments</label>
+                            <textarea id="comments" name="comments" class="textarea" placeholder="Add any additional details about the product..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Generate Verification Link</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Verification Link Modal (Hidden by default) -->
+            <div id="verification-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+                <div style="background-color: white; padding: 2rem; border-radius: 10px; max-width: 500px; width: 90%;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 1.5rem;">Verification Link Generated!</h3>
+                    <p>Share this link with your second verifier:</p>
+                    <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 5px; margin: 1rem 0; word-break: break-all;">
+                        <code id="verification-link">https://evide.com/verify/abc123xyz789</code>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+                        <button id="copy-link" class="btn btn-secondary">Copy Link</button>
+                        <button id="close-modal" class="btn btn-primary">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>E-vide</h2>
+                <p>Verify Before You Buy</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> support@evide.com</p>
+                <p><i class="fas fa-phone"></i> +1 (123) 456-7890</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 E-vide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // No additional authentication code needed here
+        // The script.js file handles authentication automatically
+        
+        // File upload preview
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileUpload = document.getElementById('file-upload');
+            const fileInput = document.getElementById('product-photo');
+            const previewContainer = document.getElementById('preview-container');
+            const imagePreview = document.getElementById('image-preview');
+            
+            fileUpload.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', function() {
+                if (fileInput.files && fileInput.files[0]) {
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        previewContainer.style.display = 'block';
+                    }
+                    
+                    reader.readAsDataURL(fileInput.files[0]);
+                }
+            });
+            
+            // Drag and drop functionality
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                fileUpload.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                fileUpload.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                fileUpload.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                fileUpload.style.borderColor = 'var(--primary-color)';
+                fileUpload.style.backgroundColor = 'rgba(74, 111, 220, 0.1)';
+            }
+            
+            function unhighlight() {
+                fileUpload.style.borderColor = '#ddd';
+                fileUpload.style.backgroundColor = 'white';
+            }
+            
+            fileUpload.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files && files[0]) {
+                    fileInput.files = files;
+                    
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        imagePreview.src = e.target.result;
+                        previewContainer.style.display = 'block';
+                    }
+                    
+                    reader.readAsDataURL(files[0]);
+                }
+            }
+        });
+        
+        // Form submission and modal handling
+        document.getElementById('first-verification-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // In a real application, you would send the form data to the server here
+            // For this prototype, we'll just show the modal with a fake verification link
+            
+            document.getElementById('verification-modal').style.display = 'flex';
+        });
+        
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('verification-modal').style.display = 'none';
+            window.location.href = 'dashboard.html'; // Redirect to dashboard after closing modal
+        });
+        
+        document.getElementById('copy-link').addEventListener('click', function() {
+            const linkText = document.getElementById('verification-link').textContent;
+            
+            // Create a temporary input element
+            const tempInput = document.createElement('input');
+            tempInput.value = linkText;
+            document.body.appendChild(tempInput);
+            
+            // Select and copy the text
+            tempInput.select();
+            document.execCommand('copy');
+            
+            // Remove the temporary element
+            document.body.removeChild(tempInput);
+            
+            // Change button text temporarily to indicate success
+            const copyButton = document.getElementById('copy-link');
+            copyButton.textContent = 'Copied!';
+            setTimeout(() => {
+                copyButton.textContent = 'Copy Link';
+            }, 2000);
+        });
+        
+        // Mobile navigation
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+            
+            burger.addEventListener('click', () => {
+                // Toggle Nav
+                nav.classList.toggle('nav-active');
+                
+                // Animate Links
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Burger Animation
+                burger.classList.toggle('toggle');
+            });
+        }
+        
+        navSlide();
+    </script>
+</body>
+</html>

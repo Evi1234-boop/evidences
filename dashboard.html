@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - E-vide</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1><a href="index.html">E-vide</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#">Notifications</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#" id="logout-btn" class="btn-login">Logout</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h2>Welcome, User!</h2>
+                <div class="user-info">
+                    <span><i class="fas fa-user-circle"></i> My Account</span>
+                </div>
+            </div>
+
+            <div class="dashboard-tabs">
+                <div class="dashboard-tab active" data-tab="verify">Verify</div>
+                <div class="dashboard-tab" data-tab="pending">Pending Jobs</div>
+                <div class="dashboard-tab" data-tab="history">History</div>
+            </div>
+
+            <div class="dashboard-content">
+                <!-- Verify Tab Content -->
+                <div class="tab-content active" id="verify-content">
+                    <div class="verification-options">
+                        <div class="verification-option" onclick="window.location.href='verify.html'">
+                            <div class="option-icon">
+                                <i class="fas fa-upload"></i>
+                            </div>
+                            <h3>1st Verification</h3>
+                            <p>Upload product details and photos to generate a verification link.</p>
+                            <a href="verify.html" class="btn btn-primary">Start Verification</a>
+                        </div>
+                        <div class="verification-option" onclick="window.location.href='verify-second.html'">
+                            <div class="option-icon">
+                                <i class="fas fa-camera"></i>
+                            </div>
+                            <h3>2nd Verification</h3>
+                            <p>Verify a product using a verification link from a seller.</p>
+                            <a href="verify-second.html" class="btn btn-primary">Enter Verification Link</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Jobs Tab Content -->
+                <div class="tab-content" id="pending-content">
+                    <h3>Pending Jobs</h3>
+                    <div class="jobs-list">
+                        <div class="job-card">
+                            <div class="job-header">
+                                <h4>iPhone 13 Pro</h4>
+                                <span class="status status-pending">Pending</span>
+                            </div>
+                            <div class="job-details">
+                                <p><strong>Brand:</strong> Apple</p>
+                                <p><strong>Date Created:</strong> May 28, 2025</p>
+                                <p><strong>Verification Link:</strong> <a href="#">evide.com/verify/abc123</a></p>
+                            </div>
+                            <div class="job-actions">
+                                <a href="#" class="btn btn-secondary">View Details</a>
+                                <a href="#" class="btn btn-primary">Share Link</a>
+                            </div>
+                        </div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <h4>Sony PlayStation 5</h4>
+                                <span class="status status-pending">Pending</span>
+                            </div>
+                            <div class="job-details">
+                                <p><strong>Brand:</strong> Sony</p>
+                                <p><strong>Date Created:</strong> May 30, 2025</p>
+                                <p><strong>Verification Link:</strong> <a href="#">evide.com/verify/def456</a></p>
+                            </div>
+                            <div class="job-actions">
+                                <a href="#" class="btn btn-secondary">View Details</a>
+                                <a href="#" class="btn btn-primary">Share Link</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History Tab Content -->
+                <div class="tab-content" id="history-content">
+                    <h3>Verification History</h3>
+                    <div class="jobs-list">
+                        <div class="job-card">
+                            <div class="job-header">
+                                <h4>Samsung Galaxy S22</h4>
+                                <span class="status status-verified">Verified</span>
+                            </div>
+                            <div class="job-details">
+                                <p><strong>Brand:</strong> Samsung</p>
+                                <p><strong>Date Completed:</strong> May 15, 2025</p>
+                                <p><strong>Verification Type:</strong> 1st Verification</p>
+                            </div>
+                            <div class="job-actions">
+                                <a href="#" class="btn btn-secondary">View Details</a>
+                            </div>
+                        </div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <h4>MacBook Pro 16"</h4>
+                                <span class="status status-verified">Verified</span>
+                            </div>
+                            <div class="job-details">
+                                <p><strong>Brand:</strong> Apple</p>
+                                <p><strong>Date Completed:</strong> May 10, 2025</p>
+                                <p><strong>Verification Type:</strong> 2nd Verification</p>
+                            </div>
+                            <div class="job-actions">
+                                <a href="#" class="btn btn-secondary">View Details</a>
+                            </div>
+                        </div>
+                        <div class="job-card">
+                            <div class="job-header">
+                                <h4>Nike Air Jordan 1</h4>
+                                <span class="status status-verified">Verified</span>
+                            </div>
+                            <div class="job-details">
+                                <p><strong>Brand:</strong> Nike</p>
+                                <p><strong>Date Completed:</strong> May 5, 2025</p>
+                                <p><strong>Verification Type:</strong> 1st Verification</p>
+                            </div>
+                            <div class="job-actions">
+                                <a href="#" class="btn btn-secondary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>E-vide</h2>
+                <p>Verify Before You Buy</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> support@evide.com</p>
+                <p><i class="fas fa-phone"></i> +1 (123) 456-7890</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 E-vide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Update welcome message with user email
+        document.addEventListener('DOMContentLoaded', function() {
+            const userEmail = localStorage.getItem('evide_user');
+            if (userEmail) {
+                document.querySelector('.dashboard-header h2').textContent = `Welcome, ${userEmail}!`;
+            }
+        });
+        
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.dashboard-tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Show the corresponding tab content
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-content`).classList.add('active');
+                });
+            });
+        });
+
+        // Mobile navigation
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+            
+            burger.addEventListener('click', () => {
+                // Toggle Nav
+                nav.classList.toggle('nav-active');
+                
+                // Animate Links
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Burger Animation
+                burger.classList.toggle('toggle');
+            });
+        }
+        
+        navSlide();
+    </script>
+</body>
+</html>

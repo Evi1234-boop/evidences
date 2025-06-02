@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Capture - E-vide</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ddd;
+            z-index: 1;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .progress-step.active .step-number {
+            background-color: var(--primary-color);
+        }
+        
+        .progress-step.completed .step-number {
+            background-color: var(--success-color);
+        }
+        
+        .step-label {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+        
+        .progress-step.active .step-label {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .photo-capture {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .capture-box {
+            aspect-ratio: 1 / 1;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .capture-box:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .capture-box i {
+            font-size: 2.5rem;
+            color: var(--gray-color);
+            margin-bottom: 1rem;
+        }
+        
+        .capture-box p {
+            color: var(--gray-color);
+            font-weight: 500;
+        }
+        
+        .capture-box.completed {
+            border-color: var(--success-color);
+        }
+        
+        .capture-box.completed::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            background-color: var(--success-color);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+        
+        .capture-box img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            z-index: -1;
+        }
+        
+        .capture-box.has-image i, .capture-box.has-image p {
+            display: none;
+        }
+        
+        .capture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: var(--transition);
+            border-radius: 10px;
+        }
+        
+        .capture-box:hover .capture-overlay {
+            opacity: 1;
+        }
+        
+        .capture-overlay i {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .capture-overlay p {
+            color: white;
+            font-weight: 600;
+        }
+        
+        .camera-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .camera-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 1rem;
+        }
+        
+        .camera-container video {
+            width: 100%;
+            border-radius: 10px;
+        }
+        
+        .camera-controls {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .camera-btn {
+            background-color: white;
+            color: var(--dark-color);
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .camera-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .camera-btn.capture {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .camera-btn i {
+            font-size: 1.5rem;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .photo-capture {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1><a href="index.html">E-vide</a></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="#">Notifications</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#" id="logout-btn" class="btn-login">Logout</a></li>
+            </ul>
+            <div class="burger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h2>Photo Capture</h2>
+                <a href="verify-second.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+            </div>
+
+            <div class="dashboard-content">
+                <div class="progress-bar">
+                    <div class="progress-step completed">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Verification Link</div>
+                    </div>
+                    <div class="progress-step active">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Photo Capture</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Verifier Info</div>
+                    </div>
+                    <div class="progress-step">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Complete</div>
+                    </div>
+                </div>
+
+                <div class="verification-form">
+                    <h3>Capture Product Photos</h3>
+                    <p>Please take clear photos of the product from all angles to complete the verification.</p>
+                    
+                    <div class="photo-capture">
+                        <div class="capture-box" data-angle="front" onclick="openCamera('front')">
+                            <i class="fas fa-camera"></i>
+                            <p>Capture Front</p>
+                        </div>
+                        <div class="capture-box" data-angle="back" onclick="openCamera('back')">
+                            <i class="fas fa-camera"></i>
+                            <p>Capture Back</p>
+                        </div>
+                        <div class="capture-box" data-angle="left" onclick="openCamera('left')">
+                            <i class="fas fa-camera"></i>
+                            <p>Capture Left</p>
+                        </div>
+                        <div class="capture-box" data-angle="right" onclick="openCamera('right')">
+                            <i class="fas fa-camera"></i>
+                            <p>Capture Right</p>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button id="continue-btn" class="btn btn-primary" disabled>Continue to Address Page</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Camera Modal -->
+            <div id="camera-modal" class="camera-modal">
+                <div class="camera-container">
+                    <video id="camera-feed" autoplay playsinline></video>
+                    <canvas id="camera-canvas" style="display: none;"></canvas>
+                </div>
+                <div class="camera-controls">
+                    <button class="camera-btn" onclick="closeCamera()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button class="camera-btn capture" onclick="capturePhoto()">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>E-vide</h2>
+                <p>Verify Before You Buy</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> support@evide.com</p>
+                <p><i class="fas fa-phone"></i> +1 (123) 456-7890</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 E-vide. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // No additional authentication code needed here
+        // The script.js file handles authentication automatically
+        
+        // Variables
+        let currentAngle = '';
+        let capturedPhotos = {
+            front: false,
+            back: false,
+            left: false,
+            right: false
+        };
+        let stream = null;
+        
+        // DOM Elements
+        const cameraModal = document.getElementById('camera-modal');
+        const cameraFeed = document.getElementById('camera-feed');
+        const cameraCanvas = document.getElementById('camera-canvas');
+        const continueBtn = document.getElementById('continue-btn');
+        
+        // Open camera for specific angle
+        function openCamera(angle) {
+            currentAngle = angle;
+            cameraModal.style.display = 'flex';
+            
+            // Access device camera
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                .then(function(mediaStream) {
+                    stream = mediaStream;
+                    cameraFeed.srcObject = mediaStream;
+                })
+                .catch(function(error) {
+                    console.error('Error accessing camera:', error);
+                    alert('Unable to access camera. Please make sure you have granted camera permissions.');
+                    closeCamera();
+                });
+        }
+        
+        // Close camera
+        function closeCamera() {
+            cameraModal.style.display = 'none';
+            
+            // Stop camera stream
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        }
+        
+        // Capture photo
+        function capturePhoto() {
+            // Set canvas dimensions to match video
+            cameraCanvas.width = cameraFeed.videoWidth;
+            cameraCanvas.height = cameraFeed.videoHeight;
+            
+            // Draw current video frame to canvas
+            const context = cameraCanvas.getContext('2d');
+            context.drawImage(cameraFeed, 0, 0, cameraCanvas.width, cameraCanvas.height);
+            
+            // Convert canvas to image data URL
+            const imageDataUrl = cameraCanvas.toDataURL('image/png');
+            
+            // Update the capture box with the captured image
+            const captureBox = document.querySelector(`.capture-box[data-angle="${currentAngle}"]`);
+            
+            // Create image element if it doesn't exist
+            if (!captureBox.querySelector('img')) {
+                const img = document.createElement('img');
+                captureBox.appendChild(img);
+            }
+            
+            // Update image source
+            const img = captureBox.querySelector('img');
+            img.src = imageDataUrl;
+            
+            // Add classes to indicate image has been captured
+            captureBox.classList.add('has-image', 'completed');
+            
+            // Add overlay for retaking photo
+            if (!captureBox.querySelector('.capture-overlay')) {
+                const overlay = document.createElement('div');
+                overlay.className = 'capture-overlay';
+                overlay.innerHTML = `
+                    <i class="fas fa-redo"></i>
+                    <p>Retake Photo</p>
+                `;
+                captureBox.appendChild(overlay);
+            }
+            
+            // Mark this angle as captured
+            capturedPhotos[currentAngle] = true;
+            
+            // Check if all photos have been captured
+            checkAllCaptured();
+            
+            // Close camera
+            closeCamera();
+        }
+        
+        // Check if all photos have been captured
+        function checkAllCaptured() {
+            const allCaptured = Object.values(capturedPhotos).every(value => value === true);
+            
+            if (allCaptured) {
+                continueBtn.disabled = false;
+                continueBtn.onclick = function() {
+                    window.location.href = 'verifier-info.html';
+                };
+            }
+        }
+        
+        // Mobile navigation
+        const navSlide = () => {
+            const burger = document.querySelector('.burger');
+            const nav = document.querySelector('.nav-links');
+            const navLinks = document.querySelectorAll('.nav-links li');
+            
+            burger.addEventListener('click', () => {
+                // Toggle Nav
+                nav.classList.toggle('nav-active');
+                
+                // Animate Links
+                navLinks.forEach((link, index) => {
+                    if (link.style.animation) {
+                        link.style.animation = '';
+                    } else {
+                        link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+                    }
+                });
+                
+                // Burger Animation
+                burger.classList.toggle('toggle');
+            });
+        }
+        
+        navSlide();
+        
+        // For demo purposes, allow clicking continue without capturing all photos
+        document.addEventListener('DOMContentLoaded', function() {
+            // Uncomment the line below to enable the continue button for demo purposes
+            // continueBtn.disabled = false;
+            
+            continueBtn.onclick = function() {
+                window.location.href = 'verifier-info.html';
+            };
+        });
+    </script>
+</body>
+</html>
